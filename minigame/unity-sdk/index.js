@@ -23,7 +23,7 @@ import uploadFile from './upload-file';
 import gameRecorder from './game-recorder';
 import chat from './chat';
 import font from './font/index';
-const unityVersion = '2021.2.5f1c1';
+const unityVersion = '2021.2.18f1c1';
 GameGlobal.unityNamespace = GameGlobal.unityNamespace || {};
 GameGlobal.unityNamespace.unityVersion = unityVersion;
 window._ScaleRate = 1;

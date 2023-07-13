@@ -33,16 +33,14 @@ if (false) {
     checkUpdate();
 }
 const managerConfig = {
-    DATA_FILE_MD5: '1ca71b620a5889d1',
-    CODE_FILE_MD5: '4600d894afea34ef',
+    DATA_FILE_MD5: '46eaa878a32efa75',
+    CODE_FILE_MD5: '1dd71c5b28b25b29',
     GAME_NAME: 'webgl',
     APPID: 'wx7ed8561bf0cb2064',
-    DATA_FILE_SIZE: "8640216",
+    
     DATA_CDN: 'https://github.com/RicoChiGit/mytest/tree/main/minigame',
     
     loadDataPackageFromSubpackage: false,
-    
-    compressDataPackage: false,
     
     preloadDataList: [
         
@@ -199,10 +197,6 @@ checkVersion().then((enable) => {
             GameGlobal.realtimeLogManager.error(err);
             GameGlobal.logmanager.warn(err);
         };
-        
-        if (GameGlobal.canUseiOSAutoGC && unityNamespace.iOSAutoGCInterval !== 0) {
-            setInterval(function () { wx.triggerGC(); }, unityNamespace.iOSAutoGCInterval);
-        }
         gameManager.startGame();
         GameGlobal.manager = gameManager;
     }

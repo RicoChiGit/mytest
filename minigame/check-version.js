@@ -50,15 +50,8 @@ export const isSupportPlayBackRate = !isAndroid || compareVersion(version, '8.0.
 
 export const isSupportCacheAudio = !isIOS || compareVersion(version, '8.0.31');
 
-const isPcBrotliInvalid = isPc && !compareVersion(SDKVersion, '2.29.2');
-const isMobileBrotliInvalid = isMobile && !compareVersion(SDKVersion, '2.21.1');
-
-const isBrotliInvalid = false && (isPcBrotliInvalid || isMobileBrotliInvalid);
-
 
 GameGlobal.canUseH5Renderer = isH5Renderer && isH5LibVersionValid;
-
-GameGlobal.canUseiOSAutoGC = isH5Renderer && compareVersion(SDKVersion, '2.32.1');
 
 const isPcInvalid = isPc && !isPcWeChatVersionValid;
 
@@ -90,8 +83,7 @@ export default () => new Promise((resolve) => {
         if (isPcInvalid
             || isMobileInvalid
             || isIOSH5Invalid
-            || isWebgl2SystemVersionInvalid()
-            || isBrotliInvalid) {
+            || isWebgl2SystemVersionInvalid()) {
             let updateWechat = true;
             let content = '当前微信版本过低\n请更新微信后进行游戏';
             if (!isIOSH5SystemVersionValid || isWebgl2SystemVersionInvalid()) {

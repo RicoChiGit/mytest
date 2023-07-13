@@ -15,10 +15,10 @@ const unityNamespace = {
     bundleHashLength: 32,
     
     releaseMemorySize: 31457280,
-    unityVersion: '2021.2.5f1c1',
+    unityVersion: '2021.2.18f1c1',
     
     unityColorSpace: 'Gamma',
-    convertPluginVersion: '202307131624',
+    convertPluginVersion: '202306292010',
     
     streamingUrlPrefixPath: '',
     // DATA_CDN + dataFileSubPrefix + datafilename
@@ -37,13 +37,11 @@ const unityNamespace = {
     enableProfileStats: false,
     
     preloadwXFont: false,
-    
-    iOSAutoGCInterval: 10000,
 };
 
 unityNamespace.monitorConfig = {
     
-    showSuggestModal: false,
+    showSuggestModal: true,
     
     enableMonitor: true,
     
