@@ -36,7 +36,7 @@
         dataUrl: buildUrl + "/webgl.data",
         frameworkUrl: buildUrl + "/webgl.framework.js",
         codeUrl: buildUrl + "/webgl.wasm",
-        symbolsUrl: buildUrl + "/",
+        symbolsUrl: buildUrl + "/webgl.symbols.json",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "WebGLtest1_2019B",
@@ -476,7 +476,6 @@
         WX_GetUserGameLiveDetails(conf, callbackId){},
         WX_OpenChannelsLiveCollection(conf, callbackId){},
         WX_OpenPage(conf, callbackId){},
-        WX_RequestMidasPaymentGameItem(conf, callbackId){},
 
         WX_OperateGameRecorderVideo() {},
         WX_RemoveStorageSync() {},
@@ -490,6 +489,8 @@
         WX_SetStorageSync() {},
         WX_ShareAppMessage() {},
         WX_TriggerGC() {},
+        WX_StopDownloadTexture() {},
+        WX_StarDownloadTexture() {},
 
         WX_OnAccelerometerChange() {},
         WX_OffAccelerometerChange() {},
