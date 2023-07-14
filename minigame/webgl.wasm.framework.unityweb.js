@@ -944,7 +944,7 @@ function getUniqueRunDependency(id) {
  }
 }
 
-function addRunDependency(id) {console.log("addRunDependency: ", id);
+function addRunDependency(id) {GameGlobal.manager.Logger.eventLog("addRunDependency: ", id);
  runDependencies++;
  if (Module["monitorRunDependencies"]) {
   Module["monitorRunDependencies"](runDependencies);
@@ -977,7 +977,7 @@ function addRunDependency(id) {console.log("addRunDependency: ", id);
  }
 }
 
-function removeRunDependency(id) {console.log("removeRunDependency: ", id);
+function removeRunDependency(id) {GameGlobal.manager.Logger.eventLog("removeRunDependency: ", id);
  runDependencies--;
  if (Module["monitorRunDependencies"]) {
   Module["monitorRunDependencies"](runDependencies);
@@ -1163,26 +1163,26 @@ var tempDouble;
 var tempI64;
 
 var ASM_CONSTS = {
- 2332428: function() {
+ 2332780: function() {
   Module["emscripten_get_now_backup"] = performance.now;
  },
- 2332483: function($0) {
+ 2332835: function($0) {
   performance.now = function() {
    return $0;
   };
  },
- 2332531: function($0) {
+ 2332883: function($0) {
   performance.now = function() {
    return $0;
   };
  },
- 2332579: function() {
+ 2332931: function() {
   performance.now = Module["emscripten_get_now_backup"];
  },
- 2332634: function() {
+ 2332986: function() {
   return Module.webglContextAttributes.premultipliedAlpha;
  },
- 2332695: function() {
+ 2333047: function() {
   return Module.webglContextAttributes.preserveDrawingBuffer;
  }
 };
@@ -5167,6 +5167,10 @@ function _WX_RequestMidasPayment(conf, callbackId) {
  window.WXWASMSDK.WX_RequestMidasPayment(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
 }
 
+function _WX_RequestMidasPaymentGameItem(conf, callbackId) {
+ window.WXWASMSDK.WX_RequestMidasPaymentGameItem(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
+}
+
 function _WX_RequestSubscribeMessage(conf, callbackId) {
  window.WXWASMSDK.WX_RequestSubscribeMessage(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
 }
@@ -5298,10 +5302,6 @@ function _WX_ShowToast(conf, callbackId) {
  window.WXWASMSDK.WX_ShowToast(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
 }
 
-function _WX_StarDownloadTexture() {
- window.WXWASMSDK.WX_StarDownloadTexture();
-}
-
 function _WX_StartAccelerometer(conf, callbackId) {
  window.WXWASMSDK.WX_StartAccelerometer(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
 }
@@ -5348,10 +5348,6 @@ function _WX_StopCompass(conf, callbackId) {
 
 function _WX_StopDeviceMotionListening(conf, callbackId) {
  window.WXWASMSDK.WX_StopDeviceMotionListening(_WXPointer_stringify_adaptor(conf), _WXPointer_stringify_adaptor(callbackId));
-}
-
-function _WX_StopDownloadTexture() {
- window.WXWASMSDK.WX_StopDownloadTexture();
 }
 
 function _WX_StopFaceDetect(conf, callbackId) {
@@ -11719,11 +11715,7 @@ function emscripten_realloc_buffer(size) {
   updateGlobalBufferAndViews(wasmMemory.buffer);
   return 1;
  } catch (e) {
-  err("emscripten_realloc_buffer: Attempted to grow heap from " + buffer.byteLength + " bytes to " + size + " bytes, but got error: " + e);
- }
-}
-
-function _emscripten_resize_heap(requestedSize) {
+  err("emscripten_realloc_buffer: Attempted to grow heap from " + buffer.byteLength + " bytes to " + size + " bytes, but got error: " + e);var alarm_item={stage:"WasmMemoryGrowException",error:e,oldSize:buffer.byteLength,newSize:size};GameGlobal.manager.reporter.alarm.malloc(alarm_item);}}function _emscripten_resize_heap(requestedSize) {
  var oldSize = HEAPU8.length;
  requestedSize = requestedSize >>> 0;
  assert(requestedSize > oldSize);
@@ -11736,7 +11728,7 @@ function _emscripten_resize_heap(requestedSize) {
   var overGrownHeapSize = oldSize * (1 + .2 / cutDown);
   overGrownHeapSize = Math.min(overGrownHeapSize, requestedSize + 100663296);
   var newSize = Math.min(maxHeapSize, alignUp(Math.max(requestedSize, overGrownHeapSize), 65536));
-  var replacement = emscripten_realloc_buffer(newSize);
+  var alarm_item={stage:"TryToRealloc",oldSize:oldSize,requestedSize:requestedSize,newSize:newSize};GameGlobal.manager.reporter.alarm.malloc(alarm_item);var replacement=emscripten_realloc_buffer(newSize);
   if (replacement) {
    return true;
   }
@@ -16191,6 +16183,7 @@ var asmLibraryArg = {
  "WX_ReportUserBehaviorBranchAnalytics": _WX_ReportUserBehaviorBranchAnalytics,
  "WX_RequestMidasFriendPayment": _WX_RequestMidasFriendPayment,
  "WX_RequestMidasPayment": _WX_RequestMidasPayment,
+ "WX_RequestMidasPaymentGameItem": _WX_RequestMidasPaymentGameItem,
  "WX_RequestSubscribeMessage": _WX_RequestSubscribeMessage,
  "WX_RequestSubscribeSystemMessage": _WX_RequestSubscribeSystemMessage,
  "WX_ReserveChannelsLive": _WX_ReserveChannelsLive,
@@ -16223,7 +16216,6 @@ var asmLibraryArg = {
  "WX_ShowShareImageMenu": _WX_ShowShareImageMenu,
  "WX_ShowShareMenu": _WX_ShowShareMenu,
  "WX_ShowToast": _WX_ShowToast,
- "WX_StarDownloadTexture": _WX_StarDownloadTexture,
  "WX_StartAccelerometer": _WX_StartAccelerometer,
  "WX_StartBeaconDiscovery": _WX_StartBeaconDiscovery,
  "WX_StartBluetoothDevicesDiscovery": _WX_StartBluetoothDevicesDiscovery,
@@ -16236,7 +16228,6 @@ var asmLibraryArg = {
  "WX_StopBluetoothDevicesDiscovery": _WX_StopBluetoothDevicesDiscovery,
  "WX_StopCompass": _WX_StopCompass,
  "WX_StopDeviceMotionListening": _WX_StopDeviceMotionListening,
- "WX_StopDownloadTexture": _WX_StopDownloadTexture,
  "WX_StopFaceDetect": _WX_StopFaceDetect,
  "WX_StopGyroscope": _WX_StopGyroscope,
  "WX_TriggerGC": _WX_TriggerGC,

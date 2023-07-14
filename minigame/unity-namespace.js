@@ -18,7 +18,7 @@ const unityNamespace = {
     unityVersion: '2021.2.18f1c1',
     
     unityColorSpace: 'Gamma',
-    convertPluginVersion: '202306292010',
+    convertPluginVersion: '202307131624',
     
     streamingUrlPrefixPath: '',
     // DATA_CDN + dataFileSubPrefix + datafilename
@@ -37,6 +37,8 @@ const unityNamespace = {
     enableProfileStats: false,
     
     preloadwXFont: false,
+    
+    iOSAutoGCInterval: 10000,
 };
 
 unityNamespace.monitorConfig = {
