@@ -42,7 +42,7 @@ let managerConfig = {
   GAME_NAME: "webgl",
   APPID: "wx7ed8561bf0cb2064",
   // DATA_FILE_SIZE: "$DATA_FILE_SIZE",
-  DATA_CDN: "https://github.com/RicoChiGit/mytest/tree/main/webgl",
+  DATA_CDN: "http://172.16.5.66:55555/test1/minigame",
   // 资源包是否作为小游戏分包加载
   loadDataPackageFromSubpackage: false,
 
