@@ -41,7 +41,7 @@ const unityNamespace = {
 
 unityNamespace.monitorConfig = {
     
-    showSuggestModal: true,
+    showSuggestModal: false,
     
     enableMonitor: true,
     

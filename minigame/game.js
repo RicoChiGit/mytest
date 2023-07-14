@@ -33,12 +33,12 @@ if (false) {
     checkUpdate();
 }
 const managerConfig = {
-    DATA_FILE_MD5: '46eaa878a32efa75',
+    DATA_FILE_MD5: '756df2f55512598c',
     CODE_FILE_MD5: '1dd71c5b28b25b29',
     GAME_NAME: 'webgl',
     APPID: 'wx7ed8561bf0cb2064',
     
-    DATA_CDN: 'https://github.com/RicoChiGit/mytest/tree/main/minigame',
+    DATA_CDN: 'https://github.com/RicoChiGit/mytest/tree/main',
     
     loadDataPackageFromSubpackage: false,
     
