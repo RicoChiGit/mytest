@@ -38,7 +38,7 @@ const managerConfig = {
     GAME_NAME: 'webgl',
     APPID: 'wx7ed8561bf0cb2064',
     
-    DATA_CDN: 'https://github.com/RicoChiGit/mytest/tree/main',
+    DATA_CDN: 'https://github.com/RicoChiGit/mytest/tree/main/webgl',
     
     loadDataPackageFromSubpackage: false,
     
