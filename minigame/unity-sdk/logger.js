@@ -1,27 +1,18 @@
-let logger;
 export default {
-    WXLogManagerDebug(str) {
-        if (!logger) {
-            logger = wx.getLogManager({ level: 0 });
-        }
+    WXLogManagerDebug(str){
+        const logger = wx.getLogManager();
         logger.debug(str);
     },
-    WXLogManagerInfo(str) {
-        if (!logger) {
-            logger = wx.getLogManager({ level: 0 });
-        }
+    WXLogManagerInfo(str){
+        const logger = wx.getLogManager();
         logger.info(str);
     },
-    WXLogManagerLog(str) {
-        if (!logger) {
-            logger = wx.getLogManager({ level: 0 });
-        }
+    WXLogManagerLog(str){
+        const logger = wx.getLogManager();
         logger.log(str);
     },
-    WXLogManagerWarn(str) {
-        if (!logger) {
-            logger = wx.getLogManager({ level: 0 });
-        }
+    WXLogManagerWarn(str){
+        const logger = wx.getLogManager();
         logger.warn(str);
-    },
+    }
 };

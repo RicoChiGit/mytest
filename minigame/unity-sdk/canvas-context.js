@@ -1,16 +1,16 @@
 const callbacks = [];
 let isTriggered = false;
 export default {
-    addCreatedListener(callback) {
-        if (isTriggered) {
+    addCreatedListener(callback){
+        if(isTriggered){
             callback();
-        }
-        else {
+        }else{
             callbacks.push(callback);
         }
     },
-    _triggerCallback() {
+    _triggerCallback(){
         isTriggered = true;
-        callbacks.forEach(v => v());
-    },
-};
+        callbacks.forEach(v=>v());
+    }
+}
+

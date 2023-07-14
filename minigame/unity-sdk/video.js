@@ -1,92 +1,84 @@
-import moduleHelper from './module-helper';
-import { formatJsonStr, getListObject, uid } from './utils';
-const videoList = {};
-const getObject = getListObject(videoList, 'video');
+const videos = {};
+const msg = 'Video 不存在!';
+import moduleHelper from "./module-helper";
 export default {
-    WXCreateVideo(conf) {
-        const id = uid();
-        const params = formatJsonStr(conf);
-        
-        if (params.underGameView) {
-            GameGlobal.enableTransparentCanvas = true;
-        }
-        videoList[id] = wx.createVideo(params);
+    WXCreateVideo(conf){
+        const id = new Date().getTime().toString(32)+Math.random().toString(32);
+        videos[id] = wx.createVideo(JSON.parse(conf));
         return id;
     },
-    WXVideoPlay(id) {
-        const obj = getObject(id);
-        if (!obj) {
-            return;
+    WXVideoPlay(id){
+        if(videos[id]){
+            videos[id].play();
+        }else{
+            console.error(msg,id);
         }
-        obj.play();
     },
-    WXVideoAddListener(id, key) {
-        const obj = getObject(id);
-        if (!obj) {
-            return;
+    WXVideoAddListener(id,key){
+        if(videos[id]){
+            videos[id][key](function(e){
+                moduleHelper.send('OnVideoCallback',JSON.stringify({
+                    callbackId:id,
+                    errMsg:key,
+                    position:e && e.position,
+                    buffered:e && e.buffered,
+                    duration:e && e.duration
+                }));
+                if(key === 'onError'){
+                    console.error(e);
+                }
+            });
+        }else{
+            console.error(msg,id);
         }
-        obj[key]((e) => {
-            moduleHelper.send('OnVideoCallback', JSON.stringify({
-                callbackId: id,
-                errMsg: key,
-                position: e && e.position,
-                buffered: e && e.buffered,
-                duration: e && e.duration,
-            }));
-            if (key === 'onError') {
-                GameGlobal.enableTransparentCanvas = false;
-                console.error(e);
-            }
-        });
     },
-    WXVideoDestroy(id) {
-        const obj = getObject(id);
-        if (!obj) {
-            return;
+    WXVideoDestroy(id){
+        if(videos[id]){
+            videos[id].destroy();
+        }else{
+            console.error(msg,id);
         }
-        obj.destroy();
-        GameGlobal.enableTransparentCanvas = false;
     },
-    WXVideoExitFullScreen(id) {
-        const obj = getObject(id);
-        if (!obj) {
-            return;
+    WXVideoExitFullScreen(id){
+        if(videos[id]){
+            videos[id].exitFullScreen();
+        }else{
+            console.error(msg,id);
         }
-        obj.exitFullScreen();
     },
-    WXVideoPause(id) {
-        const obj = getObject(id);
-        if (!obj) {
-            return;
+    WXVideoPause(id){
+        if(videos[id]){
+            videos[id].pause();
+        }else{
+            console.error(msg,id);
         }
-        obj.pause();
     },
-    WXVideoRequestFullScreen(id, direction) {
-        const obj = getObject(id);
-        if (!obj) {
-            return;
+    WXVideoRequestFullScreen(id,direction){
+        if(videos[id]){
+            videos[id].requestFullScreen(direction);
+        }else{
+            console.error(msg,id);
         }
-        obj.requestFullScreen(direction);
     },
-    WXVideoSeek(id, time) {
-        const obj = getObject(id);
-        if (!obj) {
-            return;
+    WXVideoSeek(id,time){
+        if(videos[id]){
+            videos[id].seek(time);
+        }else{
+            console.error(msg,id);
         }
-        obj.seek(time);
     },
-    WXVideoStop(id) {
-        const obj = getObject(id);
-        if (!obj) {
-            return;
+    WXVideoStop(id){
+        if(videos[id]){
+            videos[id].stop();
+        }else{
+            console.error(msg,id);
         }
-        obj.stop();
     },
-    WXVideoRemoveListener(id, key) {
-        const obj = getObject(id);
-        if (!obj) {
-            return;
+    WXVideoRemoveListener(id,key){
+        if(videos[id]){
+            videos[id][key]();
+        }else{
+            console.error(msg,id);
         }
-        obj[key]();
-    },
-};
+    }
+}

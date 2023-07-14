@@ -1,92 +1,65 @@
+import response from "./response";
 
-let cachedOpenDataContext;
-let cachedSharedCanvas;
-
-function getOpenDataContext() {
-    return cachedOpenDataContext || wx.getOpenDataContext();
-}
-
-function getSharedCanvas() {
-    return cachedSharedCanvas || getOpenDataContext().canvas;
-}
-let timerId;
-let textureObject = null;
-let textureId;
-
-function hookUnityRender() {
-    if (!textureId) {
-        return;
+let needRenderOpenData = false;
+let textureId= '';
+let runningTaskId = 0;
+let textureObject;
+function createTextureByImgObject(){
+    var webgl = GameGlobal.manager.gameInstance.Module.GL.currentContext.GLctx;
+    let openDataContext = wx.getOpenDataContext();
+    let sharedCanvas = openDataContext.canvas;
+    if(!textureObject){
+        textureObject = webgl.createTexture();
     }
-    const { GL } = GameGlobal.manager.gameInstance.Module;
-    const gl = GL.currentContext.GLctx;
-    if (!textureObject) {
-        textureObject = gl.createTexture();
-        gl.bindTexture(gl.TEXTURE_2D, textureObject);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, getSharedCanvas());
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    }
-    else {
-        
-        gl.bindTexture(gl.TEXTURE_2D, textureObject);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, getSharedCanvas());
-    }
-    GL.textures[textureId] = textureObject;
-    timerId = requestAnimationFrame(hookUnityRender);
-}
-
-function stopLastRenderLoop() {
-    
-    if (typeof timerId !== 'undefined') {
-        cancelAnimationFrame(timerId);
-    }
-}
-function startHookUnityRender() {
-    stopLastRenderLoop();
-    hookUnityRender();
-}
-function stopHookUnityRender() {
-    stopLastRenderLoop();
-    
-    const sharedCanvas = getSharedCanvas();
-    sharedCanvas.width = 1;
-    sharedCanvas.height = 1;
-    
-    const { GL } = GameGlobal.manager.gameInstance.Module;
-    const gl = GL.currentContext.GLctx;
-    gl.deleteTexture(textureObject);
-    textureObject = null;
+    webgl.bindTexture(webgl.TEXTURE_2D, textureObject);
+    webgl.texImage2D(webgl.TEXTURE_2D, 0, webgl.RGBA, webgl.RGBA, webgl.UNSIGNED_BYTE, sharedCanvas);
+    webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MIN_FILTER, webgl.LINEAR);
+    webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MAG_FILTER, webgl.LINEAR);
+    webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_S, webgl.CLAMP_TO_EDGE);
+    webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_T, webgl.CLAMP_TO_EDGE);
+    return textureObject;
 }
 export default {
-    WXDataContextPostMessage(msg) {
-        getOpenDataContext().postMessage(msg);
+    WXDataContextPostMessage(msg){
+        var openDataContext = wx.getOpenDataContext();
+        openDataContext.postMessage(msg);
     },
-    WXShowOpenData(id, x, y, width, height) {
-        if (width <= 0 || height <= 0) {
-            console.error('[unity-sdk]: WXShowOpenData要求 width 和 height 参数必须大于0');
-        }
-        
-        const openDataContext = getOpenDataContext();
-        const sharedCanvas = openDataContext.canvas;
+    WXShowOpenData(id,x,y,width,height){
+        const taskId = new Date().getTime();
+        runningTaskId = taskId; //这里保存一个id是为了避免两次
+        let openDataContext = wx.getOpenDataContext();
+        let sharedCanvas = openDataContext.canvas;
         sharedCanvas.width = width;
         sharedCanvas.height = height;
         openDataContext.postMessage({
-            type: 'WXRender',
-            x,
-            y,
-            width,
-            height,
-            devicePixelRatio: window.devicePixelRatio,
+            type:"WXRender",
+            x: x,
+            y: y,
+            width: width,
+            height:  height,
+            devicePixelRatio:window.devicePixelRatio
         });
+        const manager = GameGlobal.manager;
+        needRenderOpenData = true;
+        renderTexture();
         textureId = id;
-        startHookUnityRender();
+        function renderTexture(){
+            if(needRenderOpenData && runningTaskId === taskId){
+                manager.gameInstance.Module.GL.textures[id] = createTextureByImgObject();
+                manager.gameInstance.Module.requestAnimationFrame(renderTexture);
+            }
+        }
     },
-    WXHideOpenData() {
-        getOpenDataContext().postMessage({
-            type: 'WXDestroy',
+    WXHideOpenData(){
+        needRenderOpenData = false;
+        let openDataContext = wx.getOpenDataContext();
+        let sharedCanvas = openDataContext.canvas;
+        openDataContext.postMessage({
+            type:"WXDestroy"
         });
-        stopHookUnityRender();
+        sharedCanvas.width = 10;
+        sharedCanvas.height = 10;
+        manager.gameInstance.Module.GL.textures[textureId] = createTextureByImgObject();
+        textureObject = null;
     },
-};
+}

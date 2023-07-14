@@ -22,9 +22,7 @@
     "useApiHook": false,
     "disableUseStrict": false,
     "babelSetting": {
-      "ignore": [
-        "webgl.wasm.framework.unityweb.js"
-      ],
+      "ignore": ["webgl.wasm.framework.unityweb.js"],
       "disablePlugins": [],
       "outputPath": ""
     },
@@ -32,31 +30,42 @@
     "useCompilerModule": true,
     "userConfirmedUseCompilerModuleSwitch": false,
     "packNpmManually": false,
-    "packNpmRelationList": [],
-    "condition": false
+    "packNpmRelationList": []
   },
   "compileType": "game",
-  "libVersion": "2.32.2",
+  "libVersion": "2.24.6",
   "appid": "wx7ed8561bf0cb2064",
-  "projectname": "wxgametest1",
+  "projectname": "wxgametest2",
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "packOptions": {
     "ignore": [
       {
-        "value": ".plugincache",
-        "type": "folder"
+        "type": "folder",
+        "value": ".plugincache"
       },
       {
-        "value": ".symbols.unityweb",
-        "type": "suffix"
+        "type": "suffix",
+        "value": ".symbols.unityweb"
       }
-    ],
-    "include": []
+    ]
   },
-  "condition": {},
-  "editorSetting": {
-    "tabIndent": "insertSpaces",
-    "tabSize": 2
+  "condition": {
+    "search": {
+      "current": -1,
+      "list": []
+    },
+    "conversation": {
+      "current": -1,
+      "list": []
+    },
+    "game": {
+      "currentL": -1,
+      "list": []
+    },
+    "miniprogram": {
+      "current": -1,
+      "list": []
+    }
   }
 }
