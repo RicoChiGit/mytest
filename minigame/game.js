@@ -33,11 +33,11 @@ if (false) {
     checkUpdate();
 }
 const managerConfig = {
-    DATA_FILE_MD5: 'abdc0b2e001f7854',
-    CODE_FILE_MD5: 'd6b5d2c122820d0f',
+    DATA_FILE_MD5: 'b8eeb6c30e068828',
+    CODE_FILE_MD5: 'ff02d9c314d13ce0',
     GAME_NAME: 'webgl',
     APPID: 'wx7ed8561bf0cb2064',
-    DATA_FILE_SIZE: "8353754",
+    DATA_FILE_SIZE: "7150040",
     DATA_CDN: 'https://github.com/RicoChiGit/mytest/tree/main/webgl',
     
     loadDataPackageFromSubpackage: false,
